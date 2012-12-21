@@ -1,0 +1,6 @@
+input.button-primary, button.button-primary, a.button-primary{
+float: right;
+}
+table.fixed {
+    table-layout: auto;
+};
