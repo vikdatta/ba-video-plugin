@@ -13,7 +13,7 @@ include_once (plugin_dir_path(__FILE__) . '/model/class.Videoba.php');
 
 function call() {
     $vid = new Videoba();
-    if (isset($_POST['editpost']))           //Update button pressed   
+    if (isset($_POST['editpost']))           //Update button pressed hg kjkjkj   
         $vid->manualSubmit1();
 
     if ($_GET['page'] == 'ba-submit') {     //Adding new video
