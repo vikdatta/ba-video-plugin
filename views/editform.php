@@ -107,5 +107,9 @@ foreach ($t as $v) {
         </div>
     </div>
     <input type="hidden" name="editpost" value="UPDATE">
-    <div align="center"><input type="submit" name="editpost" value="UPDATE"></div>
+    <div align="center"><input type="submit" name="editpost" value="UPDATE"></div><br />
+    <?php if(get_post_status($_GET['id'])=='draft') { ?>
+        <div align="center"><input type="submit" name="publish" value="PUBLISH POST"></div>
+   <?php } ?>
+    
 </form>

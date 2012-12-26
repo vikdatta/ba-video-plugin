@@ -12,8 +12,7 @@ jQuery(function(){
         message: "Enter correct embed code"
     });
     jQuery("#thumb").validate({
-        expression: "if (VAL.match(/(.*?)[^w{3}\.]([a-zA-Z0-9]([a-zA-Z0-9\-]{0,65}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}(.*?.jpg)$/)) return true; else return false;",
-        message: "Enter thumbnail URL code"
+        
     });
        
      jQuery("th input").change(function(){

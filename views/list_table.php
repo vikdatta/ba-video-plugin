@@ -11,6 +11,8 @@ class My_List_Table extends WP_List_Table {
             'ID' => 'Id',
             'post_title' => 'Title',
             'guid' => 'Link',
+            'status' => 'Status',
+            'author' => 'Author',
             'duration' => 'Duration'
         );
         return $columns;
@@ -37,7 +39,7 @@ class My_List_Table extends WP_List_Table {
            
             foreach ($_POST['video'] as $video) {
               
-                echo $video;
+                //echo $video;
                 wp_delete_post($video, TRUE);
                
             }
@@ -90,6 +92,8 @@ class My_List_Table extends WP_List_Table {
             case 'ID':
             case 'post_title':
             case 'guid':
+            case 'status':
+            case 'author':
             case 'duration':
                 return $item[$column_name];
             default:
@@ -102,6 +106,8 @@ class My_List_Table extends WP_List_Table {
             'ID' => array('ID', false),
             'post_title' => array('post_title', false),
             'guid' => array('guid', false),
+            'status' => array('status', false),
+            'author' => array('author',false),
             'duration' => array('duration', false)
         );
         return $sortable_columns;
@@ -147,6 +153,7 @@ $myListTable->prepare_items($this->a);
 ?><form method="post">
 
     <input type="hidden" name="page" value="my_list_test" />
+   
     <?php $myListTable->search_box('search', 'search_id'); ?>
 
     <?php $myListTable->display(); ?>

@@ -29,7 +29,7 @@ function create_menu() {
     add_menu_page("ba-vid-plugin", "ba-vid-plugin", 0, "ba-vid-plugin", "show_video_menu");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Manage Videos", 0, "ba-vid-plugin", "show_video_menu");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Submit Videos", 0, "ba-submit", "show_video_menu");
-    add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Settings", 4, "ba-settings", "show_manage_menu");
+    add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Settings", 4, "ba-settings", "show_video_menu");
 }
 
 function show_video_menu() {         //Callback function
@@ -44,9 +44,13 @@ function show_video_menu() {         //Callback function
             //include_once (dirname(__FILE__) . '/ba-managment.php');       //Submit Video
             call();
             break;
-    }
+        
+        case 'ba-settings' :
+            add_option('status','publish');
+            add_option('mail','no');
+            call();
+            break;
+            
+            }
 }
 
-function show_manage_menu() {        //Callback function
-    ?> <h2>Settings page</h2> <?php }
-?>

@@ -4,7 +4,7 @@ class Videoba {
 
     public $ok = 1;
     public $my_post = array();
-    public $id, $filename, $wp_file_type, $wp_upload_dir, $upload, $attach_id, $attach_data, $pages, $link, $url_val;
+    public $id, $filename, $wp_file_type, $wp_upload_dir, $upload, $attach_id, $attach_data, $pages, $link, $url_val, $status, $mail, $sts;
     public $attachment = array();
     public $arr = array();
     public $a = array();
@@ -12,7 +12,10 @@ class Videoba {
 
     public function manualSubmit1() {
 
-        if (isset($_POST['submit']) || isset($_POST['editpost'])) {     //If 'submit' or 'update' button is pressed
+
+
+
+        if (isset($_POST['submit']) || isset($_POST['editpost']) || $_POST['publish']) {     //If 'submit' or 'update' button is pressed
             if ($_POST['embed'] == '') {                                    //Checking that fields are not empty    
                 $this->ok = 0;
             }
@@ -25,17 +28,31 @@ class Videoba {
                 $this->my_post = array();
                 $this->my_post['post_title'] = $_POST['title'];
 
-                if (isset($_POST['editpost'])) {
+                if (isset($_POST['publish'])) {
                     $this->my_post['post_content'] = $_POST['description'];
                     $this->my_post['ID'] = $_GET['id'];
                     $this->my_post['post_category'] = wp_set_post_terms($_GET['id'], $_POST['post_category'], 'category', TRUE);
+                    $this->my_post['post_status'] = 'publish';
+                    //print_r($_POST['post_category']);
+                } else if (isset($_POST['editpost'])) {
+                    $this->my_post['post_content'] = $_POST['description'];
+                    $this->my_post['ID'] = $_GET['id'];
+                    $this->my_post['post_category'] = wp_set_post_terms($_GET['id'], $_POST['post_category'], 'category', TRUE);
+                    $this->my_post['post_status'] = get_post_status($_GET['id']);
                     //print_r($_POST['post_category']);
                 } else {
                     $this->my_post['post_content'] = $_POST['description'];
                 }
-                $this->my_post['post_status'] = 'publish';
+                //echo " status = ".get_option('status');
+                if (!(isset($_POST['editpost'])))
+                    if (!(isset($_POST['publish'])) || (isset($_POST['submit']))) {
+                        echo 'here in if ';
+                        $this->my_post['post_status'] = get_option('status');
+                    }
+
                 $this->my_post['tags_input'] = $_POST['tags'];
                 $this->my_post['post_category'] = $_POST['post_category'];
+
 
                 if (isset($_POST['submit'])) {
                     //echo "in if";
@@ -46,9 +63,9 @@ class Videoba {
                         // add_post_meta($id, 'videoswiper-embed-thumb', $_POST['thumb']);
                         add_post_meta($this->id, 'videoswiper-embed-time', $_POST['time']);
 
-                       if (isset($_FILES['thumb'])) {
+                        if (isset($_FILES['thumb'])) {
                             $this->filename = $_FILES['thumb']['name'];
-                           
+
                             $this->wp_filetype = wp_check_filetype(basename($this->filename), null);
                             $this->wp_upload_dir = wp_upload_dir();
                             $this->upload = wp_upload_bits($_FILES["thumb"]["name"], null, file_get_contents($_FILES["thumb"]["tmp_name"]));
@@ -64,7 +81,7 @@ class Videoba {
                             );
 
                             $this->attach_id = wp_insert_attachment($this->attachment, $this->upload['file'], $this->id);
-                            
+
                             // you must first include the image.php file
                             // for the function wp_generate_attachment_metadata() to work
                             require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -76,6 +93,14 @@ class Videoba {
                         if ($_POST['thumb']) {
                             add_post_meta($this->id, 'videoswiper-embed-thumb', $_POST['thumb']);
                         }
+                    }
+                    if (get_option('mail') == 'yes') {
+                        $admin_email = get_settings('admin_email');
+                        echo "sending mail to " . $admin_email;
+                        $headers[] = 'From: Me Myself <me@example.net>';
+                        $headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
+                        $headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
+                        wp_mail($admin_email, 'New Post Awaiting Moderation', 'There are new post that need to be approved', $headers);
                     }
                 } else {
                     echo "in else";
@@ -90,7 +115,7 @@ class Videoba {
                             $this->pages = & get_children('numberposts=1&post_mime_type=image/jpeg&post_parent=' . $_GET['id']);
                             update_post_meta($this->id, 'videoswiper-embed-thumb', $_POST['thumb']);
                             foreach ($this->pages as $attachment_id => $attachment) {
-                                
+
                                 $this->link = $attachment->ID;
                                 //echo $link;
                             }
@@ -101,21 +126,23 @@ class Videoba {
                                 echo "empty";
                         }
                         if (isset($_FILES['thumb'])) {
+                            echo "in here for editing thumbnail";
                             $this->filename = $_FILES['thumb']['name'];
                             $this->wp_filetype = wp_check_filetype(basename($this->filename), null);
                             $this->wp_upload_dir = wp_upload_dir();
+                            // if(!(empty($_FILES['thumb']['tmp_name'])))
                             $this->upload = wp_upload_bits($_FILES["thumb"]["name"], null, file_get_contents($_FILES["thumb"]["tmp_name"]));
-                            //print_r($upload);
+                            print_r($this->upload);
                             add_post_meta($this->id, 'thumb', $this->upload);
                             //   update_post_meta($id,'thumb',$upload);
-                            $attachment = array(
+                            $this->attachment = array(
                                 'guid' => $this->upload['url'],
                                 'post_mime_type' => $this->wp_filetype['type'],
                                 'post_title' => preg_replace('/\.[^.]+$/', '', basename($this->filename)),
                                 'post_content' => '',
                                 'post_status' => 'inherit'
                             );
-
+                            print_r($this->attachment);
                             $this->attach_id = wp_insert_attachment($this->attachment, $this->upload['file'], $this->id);
                             require_once(ABSPATH . 'wp-admin/includes/image.php');
                             $this->attach_data = wp_generate_attachment_metadata($this->attach_id, $this->upload['file']);
@@ -171,6 +198,12 @@ class Videoba {
     public function show_main() {
         global $customFields;
         $customFields = "'videoswiper-embed-code'";
+        global $current_user;
+         //print_r($current_user);
+      // print_r($current_user->caps);
+       //echo $current_user->caps['administrator'];
+        //echo $current_user->user_login;
+        
         //echo $customFields;
         //$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         if (!(isset($_POST['s'])) || empty($_POST['s']))
@@ -195,7 +228,10 @@ class Videoba {
             $this->customPosts = new WP_Query();
             // print_r($customPosts);
         }
-        $this->customPosts->query('&paged=');
+        if( $current_user->caps['administrator']=='1')
+            $this->customPosts->query('&paged=');
+        else
+            $this->customPosts->query('&author='.$current_user->ID);
         remove_filter('posts_join', 'get_custom_field_posts_join');
         remove_filter('posts_groupby', 'get_custom_field_posts_group');
         // print_r($customPosts);
@@ -207,12 +243,28 @@ class Videoba {
             $this->arr['ID'] = get_the_ID();
             $this->arr['post_title'] = get_the_title();
             $this->arr['guid'] = get_permalink();
+            $this->arr['status'] = get_post_status(get_the_ID());
+            $this->arr['author'] = get_the_author();
             $this->arr['duration'] = get_post_meta(get_the_ID(), "videoswiper-embed-time", TRUE);
             $this->a[$this->i] = $this->arr;
+            $this->sts = get_post_status(get_the_ID());
+
+
+
             $this->i = ($this->i + 1);
         endwhile;
         include_once (plugin_dir_path(__FILE__) . '../views/list_table.php');       //  table head to display list of videos
         wp_reset_query();
+    }
+
+    public function vidSettings() {
+
+        if (!(empty($_POST['save']))) {
+            update_option('status', $_POST['poststatus']);
+            update_option('mail', $_POST['mailoption']);
+        }
+
+        include_once (plugin_dir_path(__FILE__) . '../views/setting_page.php');
     }
 
 }

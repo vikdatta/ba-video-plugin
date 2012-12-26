@@ -13,10 +13,16 @@ include_once (plugin_dir_path(__FILE__) . '/model/class.Videoba.php');
 
 function call() {
     $vid = new Videoba();
-    if (isset($_POST['editpost']))           //Update button pressed hg kjkjkj   
+    if($_GET['page']=='ba-settings'){
+        ?> <div class="icon32" id="icon-edit">
+</div><h1>Settings Page :</h1> <?php
+        $vid->vidSettings();
+    }
+    else if (isset($_POST['editpost']))           //Update button pressed
         $vid->manualSubmit1();
+        
 
-    if ($_GET['page'] == 'ba-submit') {     //Adding new video
+    else if ($_GET['page'] == 'ba-submit') {     //Adding new video
         $vid->manualSubmit1();
     } else {
 
