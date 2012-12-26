@@ -22,11 +22,31 @@ if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin')) {
 }
 
 
+
+
+function my_admin_scripts() {
+wp_enqueue_script('media-upload');
+wp_enqueue_script('thickbox');
+wp_register_script('my-upload', WP_PLUGIN_URL.'/ba-vid-plugin/my-script.js', array('jquery','media-upload','thickbox'));
+wp_enqueue_script('my-upload');
+}
+
+function my_admin_styles() {
+wp_enqueue_style('thickbox');
+}
+
+if (isset($_GET['page']) && $_GET['page'] == 'ba-submit') {
+add_action('admin_print_scripts', 'my_admin_scripts');
+add_action('admin_print_styles', 'my_admin_styles');
+}
+
+
+
 add_action('admin_menu', 'create_menu');         //Creating Custom Admin menu
 
 function create_menu() {
 
-    add_menu_page("ba-vid-plugin", "ba-vid-plugin", 0, "ba-vid-plugin", "show_video_menu");
+    add_menu_page("ba-vid-plugin", "ba-vid-plugin", 0, "ba-vid-plugin", "show_video_menu", "../wp-content/plugins/BA-video/ba_icon.jpg");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Manage Videos", 0, "ba-vid-plugin", "show_video_menu");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Submit Videos", 0, "ba-submit", "show_video_menu");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Settings", 4, "ba-settings", "show_video_menu");
