@@ -43,7 +43,7 @@
          </thead>
     </table>
    <input type="hidden" name="save" value="save"><br />
-    <div style="padding-left: 421px;"><input type="submit" name="save" value="SAVE SETTINGS"></div>
+    <div style="padding-left: 214px;"><input type="submit" name="save" value="SAVE SETTINGS"></div>
     
        
 </form>

@@ -229,9 +229,9 @@ class Videoba {
             // print_r($customPosts);
         }
         if( $current_user->caps['administrator']=='1')
-            $this->customPosts->query('&paged=');
+            $this->customPosts->query('posts_per_page=-1');
         else
-            $this->customPosts->query('&author='.$current_user->ID);
+            $this->customPosts->query('&author='.$current_user->ID.'&posts_per_page=-1');
         remove_filter('posts_join', 'get_custom_field_posts_join');
         remove_filter('posts_groupby', 'get_custom_field_posts_group');
         // print_r($customPosts);

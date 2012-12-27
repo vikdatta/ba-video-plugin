@@ -1,4 +1,43 @@
 <?php
+
+add_filter('custhook', 'setPostViews');
+add_filter('dispview', 'getPostViews');
+
+function getPostViews() {
+    $postID = get_the_ID();
+    $count_key = 'post_views_count';
+    $countdisp = get_post_meta($postID, $count_key, true);
+    if ($countdisp == '') {
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        echo "0";
+    }
+    echo $countdisp;
+}
+
+function setPostViews() {
+    //echo "hello";
+    $postID = get_the_ID();
+    //echo single_post_title();
+    $count_key = 'post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if ($count == '') {
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    } else {
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+    $countdisp = get_post_meta($postID, $count_key, true);
+    if ($countdisp == '') {
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        echo "0";
+    }
+    echo $countdisp;
+}
+
 if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin')) {
     add_action('admin_enqueue_scripts', 'load_css_scripts');      //include CSS here
 
@@ -20,28 +59,6 @@ if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin')) {
     }
 
 }
-
-
-
-
-function my_admin_scripts() {
-wp_enqueue_script('media-upload');
-wp_enqueue_script('thickbox');
-wp_register_script('my-upload', WP_PLUGIN_URL.'/ba-vid-plugin/my-script.js', array('jquery','media-upload','thickbox'));
-wp_enqueue_script('my-upload');
-}
-
-function my_admin_styles() {
-wp_enqueue_style('thickbox');
-}
-
-if (isset($_GET['page']) && $_GET['page'] == 'ba-submit') {
-add_action('admin_print_scripts', 'my_admin_scripts');
-add_action('admin_print_styles', 'my_admin_styles');
-}
-
-
-
 add_action('admin_menu', 'create_menu');         //Creating Custom Admin menu
 
 function create_menu() {
@@ -64,13 +81,12 @@ function show_video_menu() {         //Callback function
             //include_once (dirname(__FILE__) . '/ba-managment.php');       //Submit Video
             call();
             break;
-        
+
         case 'ba-settings' :
-            add_option('status','publish');
-            add_option('mail','no');
+            add_option('status', 'publish');
+            add_option('mail', 'no');
             call();
             break;
-            
-            }
+    }
 }
 
