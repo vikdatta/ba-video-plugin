@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: ba-vid-plugin
   Plugin URI: localhost/wordpress
@@ -13,22 +12,36 @@ include_once (plugin_dir_path(__FILE__) . '/model/class.Videoba.php');
 
 function call() {
     $vid = new Videoba();
-    if($_GET['page']=='ba-settings'){
+    if ($_GET['page'] == 'ba-settings') {
         ?> <div class="icon32" id="icon-edit">
-</div><h1>Settings Page :</h1> <?php
+        </div><h1>Settings Page :</h1> <?php
         $vid->vidSettings();
-    }
-    else if (isset($_POST['editpost']))           //Update button pressed
+    } else if (isset($_POST['editpost']))           //Update button pressed
         $vid->manualSubmit1();
-        
+
 
     else if ($_GET['page'] == 'ba-submit') {     //Adding new video
         $vid->manualSubmit1();
-    } else {
+    } else if ($_GET['page'] == 'ba-vid-plugin') {
 
-        if ($_GET['mode'] == 'del') {       //Delete button pressed
-            wp_delete_post($_GET['id'], TRUE);
-            $vid->show_main();
+        if ($_GET['mode'] == 'del') {           //Delete button pressed
+            $post_tmp_del = get_post($_GET['id']);
+            global $current_user;
+            $user_id = $post_tmp_del->post_author;
+            $current_auth = $current_user->ID;
+
+            if (($current_auth == $user_id) || ($current_user->caps['administrator'] == '1')) {
+                wp_delete_post($_GET['id'], TRUE);
+                $vid->show_main();
+            } else {
+                ?>
+                <div class="wrap"><h2>&nbsp</h2>                <!-- Success message -->
+                    <div class="updated" id="message" style="background-color: rgb(255, 251, 204);">
+                        <p><strong>Illegal Delete request.</strong>
+
+                    </div>
+                </div>     <?php
+            }
         } else
         if ($_GET['mode'] == 'edit') {      //Edit  button pressed
             include_once (plugin_dir_path(__FILE__) . '/views/editform.php');       //printing edit form

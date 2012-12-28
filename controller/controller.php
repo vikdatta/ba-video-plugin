@@ -38,7 +38,8 @@ function setPostViews() {
     echo $countdisp;
 }
 
-if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin')) {
+if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin') || (is_page())) {
+    //echo "here";
     add_action('admin_enqueue_scripts', 'load_css_scripts');      //include CSS here
 
     function load_css_scripts() {

@@ -1,4 +1,5 @@
-
+jQuery.noConflict();
+jQuery(document).ready(function(){
 (function(jQuery){
     var ValidationErrors = new Array();
     jQuery.fn.validate = function(options){
@@ -117,5 +118,5 @@
         });
     };
     
-    
-})(jQuery);
+})(jQuery)
+});

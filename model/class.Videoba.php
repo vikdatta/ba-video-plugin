@@ -27,7 +27,7 @@ class Videoba {
             if ($this->ok) {                                                     //If fields are not empty
                 $this->my_post = array();
                 $this->my_post['post_title'] = $_POST['title'];
-
+               // $category_get = $_POST['post_category'];
                 if (isset($_POST['publish'])) {
                     $this->my_post['post_content'] = $_POST['description'];
                     $this->my_post['ID'] = $_GET['id'];
@@ -46,7 +46,7 @@ class Videoba {
                 //echo " status = ".get_option('status');
                 if (!(isset($_POST['editpost'])))
                     if (!(isset($_POST['publish'])) || (isset($_POST['submit']))) {
-                        echo 'here in if ';
+                        //echo 'here in if ';
                         $this->my_post['post_status'] = get_option('status');
                     }
 
@@ -103,7 +103,7 @@ class Videoba {
                         wp_mail($admin_email, 'New Post Awaiting Moderation', 'There are new post that need to be approved', $headers);
                     }
                 } else {
-                    echo "in else";
+                    //echo "in else";
                     $this->id = wp_update_post($this->my_post);
                     if ($this->id) {
                         update_post_meta($this->id, 'videoswiper-embed-code', $_POST['embed']);
@@ -126,13 +126,13 @@ class Videoba {
                                 echo "empty";
                         }
                         if (isset($_FILES['thumb'])) {
-                            echo "in here for editing thumbnail";
+                            //echo "in here for editing thumbnail";
                             $this->filename = $_FILES['thumb']['name'];
                             $this->wp_filetype = wp_check_filetype(basename($this->filename), null);
                             $this->wp_upload_dir = wp_upload_dir();
                             // if(!(empty($_FILES['thumb']['tmp_name'])))
                             $this->upload = wp_upload_bits($_FILES["thumb"]["name"], null, file_get_contents($_FILES["thumb"]["tmp_name"]));
-                            print_r($this->upload);
+                            //print_r($this->upload);
                             add_post_meta($this->id, 'thumb', $this->upload);
                             //   update_post_meta($id,'thumb',$upload);
                             $this->attachment = array(
@@ -142,7 +142,7 @@ class Videoba {
                                 'post_content' => '',
                                 'post_status' => 'inherit'
                             );
-                            print_r($this->attachment);
+                            //print_r($this->attachment);
                             $this->attach_id = wp_insert_attachment($this->attachment, $this->upload['file'], $this->id);
                             require_once(ABSPATH . 'wp-admin/includes/image.php');
                             $this->attach_data = wp_generate_attachment_metadata($this->attach_id, $this->upload['file']);
@@ -202,7 +202,7 @@ class Videoba {
          //print_r($current_user);
       // print_r($current_user->caps);
        //echo $current_user->caps['administrator'];
-        //echo $current_user->user_login;
+        //echo $current_user->ID;
         
         //echo $customFields;
         //$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
