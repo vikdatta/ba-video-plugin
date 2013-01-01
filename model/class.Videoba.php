@@ -27,7 +27,7 @@ class Videoba {
             if ($this->ok) {                                                     //If fields are not empty
                 $this->my_post = array();
                 $this->my_post['post_title'] = $_POST['title'];
-               // $category_get = $_POST['post_category'];
+                // $category_get = $_POST['post_category'];
                 if (isset($_POST['publish'])) {
                     $this->my_post['post_content'] = $_POST['description'];
                     $this->my_post['ID'] = $_GET['id'];
@@ -38,7 +38,7 @@ class Videoba {
                     $this->my_post['post_content'] = $_POST['description'];
                     $this->my_post['ID'] = $_GET['id'];
                     $this->my_post['post_category'] = wp_set_post_terms($_GET['id'], $_POST['post_category'], 'category', TRUE);
-                    $this->my_post['post_status'] = get_post_status($_GET['id']);
+                    $this->my_post['post_status'] = get_option('status');
                     //print_r($_POST['post_category']);
                 } else {
                     $this->my_post['post_content'] = $_POST['description'];
@@ -125,12 +125,14 @@ class Videoba {
                             else
                                 echo "empty";
                         }
-                        if (isset($_FILES['thumb'])) {
+                        if (isset($_FILES['thumb']) && ($_FILES['thumb']['error'] == '0')) {
                             //echo "in here for editing thumbnail";
                             $this->filename = $_FILES['thumb']['name'];
                             $this->wp_filetype = wp_check_filetype(basename($this->filename), null);
                             $this->wp_upload_dir = wp_upload_dir();
-                            // if(!(empty($_FILES['thumb']['tmp_name'])))
+                            //  print_r($_FILES['thumb']);
+                            //echo $_FILES['thumb']['error'];
+
                             $this->upload = wp_upload_bits($_FILES["thumb"]["name"], null, file_get_contents($_FILES["thumb"]["tmp_name"]));
                             //print_r($this->upload);
                             add_post_meta($this->id, 'thumb', $this->upload);
@@ -165,7 +167,7 @@ class Videoba {
                 <div class="wrap"><h2>&nbsp</h2>                <!-- Success message -->
                     <div class="updated" id="message" style="background-color: rgb(255, 251, 204);">
                         <p><strong>Video was added successfully.</strong>
-                            <a href="../">Visit site</a>
+                            <a href="<?php echo site_url(); ?>">Visit site</a>
                     </div>
                 </div>                        
                 <?php
@@ -199,11 +201,10 @@ class Videoba {
         global $customFields;
         $customFields = "'videoswiper-embed-code'";
         global $current_user;
-         //print_r($current_user);
-      // print_r($current_user->caps);
-       //echo $current_user->caps['administrator'];
+        //print_r($current_user);
+        // print_r($current_user->caps);
+        //echo $current_user->caps['administrator'];
         //echo $current_user->ID;
-        
         //echo $customFields;
         //$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         if (!(isset($_POST['s'])) || empty($_POST['s']))
@@ -228,10 +229,10 @@ class Videoba {
             $this->customPosts = new WP_Query();
             // print_r($customPosts);
         }
-        if( $current_user->caps['administrator']=='1')
+        if ($current_user->caps['administrator'] == '1')
             $this->customPosts->query('posts_per_page=-1');
         else
-            $this->customPosts->query('&author='.$current_user->ID.'&posts_per_page=-1');
+            $this->customPosts->query('&author=' . $current_user->ID . '&posts_per_page=-1');
         remove_filter('posts_join', 'get_custom_field_posts_join');
         remove_filter('posts_groupby', 'get_custom_field_posts_group');
         // print_r($customPosts);
