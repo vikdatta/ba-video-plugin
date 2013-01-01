@@ -150,5 +150,32 @@ jQuery(function(){
 	} );
 
 	jQuery('.categorychecklist :checkbox').change( syncChecks ).filter( ':checked' ).change();
+        
+        ////////////////
+        
+        function setUserSetting( name, value, _del ) {
+	if ( 'object' !== typeof userSettings )
+		return false;
+
+	var cookie = 'wp-settings-' + userSettings.uid, all = wpCookies.getHash(cookie) || {}, path = userSettings.url,
+	n = name.toString().replace(/[^A-Za-z0-9_]/, ''), v = value.toString().replace(/[^A-Za-z0-9_]/, '');
+
+	if ( _del ) {
+		delete all[n];
+	} else {
+		all[n] = v;
+	}
+
+	wpCookies.setHash(cookie, all, 31536000, path);
+	wpCookies.set('wp-settings-time-'+userSettings.uid, userSettings.time, 31536000, path);
+
+	return name;
+}
+
+function deleteUserSetting( name ) {
+	return setUserSetting( name, '', 1 );
+}
+        
+        ///////////
 });
 
