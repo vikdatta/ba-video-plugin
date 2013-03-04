@@ -9,6 +9,7 @@ class My_List_Table extends WP_List_Table {
         $columns = array(
             'cb' => '<input type="checkbox" />',
             'ID' => 'Id',
+            'thumb' => 'Thumb',
             'post_title' => 'Title',
             'guid' => 'Link',
             'status' => 'Status',
@@ -90,6 +91,7 @@ class My_List_Table extends WP_List_Table {
     function column_default($item, $column_name) {
         switch ($column_name) {
             case 'ID':
+            case 'thumb':
             case 'post_title':
             case 'guid':
             case 'status':
@@ -104,6 +106,7 @@ class My_List_Table extends WP_List_Table {
     function get_sortable_columns() {
         $sortable_columns = array(
             'ID' => array('ID', false),
+            'thumb' => array('thumb', false),
             'post_title' => array('post_title', false),
             'guid' => array('guid', false),
             'status' => array('status', false),

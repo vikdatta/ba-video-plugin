@@ -4,9 +4,17 @@
   Plugin URI: localhost/wordpress
   Description: video hosting plugin with MVC
   Author: baseapp systems
-  Version: 1.0
+  Version: 3.0
   Author URI: http://baseapp.com/
  */
+ 
+ require 'plugin-updates/plugin-update-checker.php';
+$MyUpdateChecker = new PluginUpdateChecker(
+    'http://192.168.0.1/vikrant/wptest/ba-vid-plugin/info.json',
+    __FILE__
+);
+ 
+ 
 include_once (dirname(__FILE__) . '/controller/controller.php');
 include_once (plugin_dir_path(__FILE__) . '/model/class.Videoba.php');
 
@@ -14,7 +22,7 @@ function call() {
     $vid = new Videoba();
     if ($_GET['page'] == 'ba-settings') {
         ?> <div class="icon32" id="icon-edit">
-        </div><h1>Settings Page :</h1> <?php
+        </div><h1><?php _e( 'Settings Page','ba-vid-plugin' );?></h1> <?php
         $vid->vidSettings();
     } else if (isset($_POST['editpost']))           //Update button pressed
         $vid->manualSubmit1();
