@@ -11,7 +11,7 @@ class My_List_Table extends WP_List_Table {
             'ID' => 'Id',
             'thumb' => 'Thumb',
             'post_title' => 'Title',
-            'guid' => 'Link',
+            //'guid' => 'Link',
             'status' => 'Status',
             'author' => 'Author',
             'duration' => 'Duration'
@@ -93,7 +93,7 @@ class My_List_Table extends WP_List_Table {
             case 'ID':
             case 'thumb':
             case 'post_title':
-            case 'guid':
+            //case 'guid':
             case 'status':
             case 'author':
             case 'duration':
@@ -108,7 +108,7 @@ class My_List_Table extends WP_List_Table {
             'ID' => array('ID', false),
             'thumb' => array('thumb', false),
             'post_title' => array('post_title', false),
-            'guid' => array('guid', false),
+            //'guid' => array('guid', false),
             'status' => array('status', false),
             'author' => array('author',false),
             'duration' => array('duration', false)
@@ -130,8 +130,8 @@ class My_List_Table extends WP_List_Table {
     function column_post_title($item) {
 
         $actions = array(
-            'edit' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Edit</a>', 'edit', $item['ID']),
-            'delete' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Delete</a>', 'del', $item['ID']),
+            'edit' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Edit</a>', 'edit', get_the_ID()),
+            'delete' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Delete</a>', 'del', get_the_ID()),
         );
         return sprintf('%1$s %2$s', $item['post_title'], $this->row_actions($actions));
     }
