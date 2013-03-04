@@ -242,6 +242,7 @@ class Videoba {
         $this->i = 0;
         while ($this->customPosts->have_posts()) : $this->customPosts->the_post();
             $this->arr['ID'] = get_the_ID();
+            $this->arr['thumb'] =  the_post_thumbnail('featured-thumb', array('class' => 'entry-thumb')); 
             $this->arr['post_title'] = get_the_title();
             $this->arr['guid'] = get_permalink();
             $this->arr['status'] = get_post_status(get_the_ID());

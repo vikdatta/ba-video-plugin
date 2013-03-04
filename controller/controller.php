@@ -2,11 +2,15 @@
 
 add_filter('custhook', 'setPostViews');
 add_filter('dispview', 'getPostViews');
+add_filter('dispview2', 'getPostViews2');
 
 function getPostViews() {
+    
+    
     $postID = get_the_ID();
+    
     $count_key = 'post_views_count';
-    $countdisp = get_post_meta($postID, $count_key, true);
+    $countdisp = get_post_meta($postID, $count_key, TRUE);
     if ($countdisp == '') {
         delete_post_meta($postID, $count_key);
         add_post_meta($postID, $count_key, '0');
@@ -14,6 +18,23 @@ function getPostViews() {
     }
     echo $countdisp;
 }
+
+function getPostViews2() {
+    global $post;
+    
+    $postID = $post[0]->ID;
+    
+    $count_key = 'post_views_count';
+    $countdisp = get_post_meta($postID, $count_key, TRUE);
+    if ($countdisp == '') {
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        echo "0";
+    }
+    echo $countdisp;
+}
+
+
 
 function setPostViews() {
     //echo "hello";
@@ -63,7 +84,7 @@ if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin') || (is_
 add_action('admin_menu', 'create_menu');         //Creating Custom Admin menu
 
 function create_menu() {
-
+    load_plugin_textdomain( 'ba-vid-plugin', false, dirname( plugin_basename( __FILE__ ) ) );
     add_menu_page("ba-vid-plugin", "ba-vid-plugin", 0, "ba-vid-plugin", "show_video_menu", "../wp-content/plugins/BA-video/ba_icon.jpg");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Manage Videos", 0, "ba-vid-plugin", "show_video_menu");
     add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Submit Videos", 0, "ba-submit", "show_video_menu");
