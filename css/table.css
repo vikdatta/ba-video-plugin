@@ -3,4 +3,8 @@ float: right;
 }
 table.fixed {
     table-layout: auto;
-}                                                     
+}           
+.widefat td {
+    color: #555555;
+    padding: 1em;
+}                                          

@@ -10,4 +10,7 @@ jQuery(document).ready(function($){
 wp.media.controller.Library.prototype.defaults.contentUserSetting=false;
 });
 </script>
+
+add_image_size('thmb',50,50,TRUE);
+
 <?php } ?>

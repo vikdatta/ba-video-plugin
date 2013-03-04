@@ -240,14 +240,28 @@ class Videoba {
         // global $a;
         $this->a = array();
         $this->i = 0;
-        while ($this->customPosts->have_posts()) : $this->customPosts->the_post();
+        while ($this->customPosts->have_posts()) : $this->customPosts->the_post(); // Inserting values in table
             $this->arr['ID'] = get_the_ID();
-            $this->arr['thumb'] =  the_post_thumbnail('featured-thumb', array('class' => 'entry-thumb')); 
-            $this->arr['post_title'] = get_the_title();
-            $this->arr['guid'] = get_permalink();
+            //Fetching Thumbnail
+            if(has_post_thumbnail())
+                $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ) );  //URL of Thumbnail as attachment
+            else
+                $image[0] = get_post_meta(get_the_ID(), 'videoswiper-embed-thumb', TRUE);    //URL of Thumbnail from URL
+            $this->arr['thumb'] =  '<img src="' . $image[0] . ' " width="120px" height="68px" />';  
+            
+            //------------Getting video title followed by url to video-----------
+            
+            $vidTitle = get_the_title()."   ( <a class='vidPreview' target='_blank' href='".get_permalink()."'>View</a> )";
+            $this->arr['post_title'] = $vidTitle;
+            //$this->arr['guid'] = get_permalink();
             $this->arr['status'] = get_post_status(get_the_ID());
             $this->arr['author'] = get_the_author();
-            $this->arr['duration'] = get_post_meta(get_the_ID(), "videoswiper-embed-time", TRUE);
+            if ((get_post_meta(get_the_ID(), 'videoswiper-embed-time', true)) >= 3600) {
+                        $vidTime= gmdate("H:i:s", get_post_meta(get_the_ID(), 'videoswiper-embed-time', true));
+                    } else {
+                        $vidTime= gmdate("i:s", get_post_meta(get_the_ID(), 'videoswiper-embed-time', true));
+                    }
+            $this->arr['duration'] = $vidTime;
             $this->a[$this->i] = $this->arr;
             $this->sts = get_post_status(get_the_ID());
 
