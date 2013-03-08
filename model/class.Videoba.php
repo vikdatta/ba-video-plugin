@@ -247,11 +247,11 @@ class Videoba {
                 $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ) );  //URL of Thumbnail as attachment
             else
                 $image[0] = get_post_meta(get_the_ID(), 'videoswiper-embed-thumb', TRUE);    //URL of Thumbnail from URL
-            $this->arr['thumb'] =  '<img src="' . $image[0] . ' " width="120px" height="68px" />';  
+            $this->arr['thumb'] =  '<a href="'.get_permalink().'"><img src="'.$image[0].'" width="120px" height="68px" /></a>';  
             
             //------------Getting video title followed by url to video-----------
             
-            $vidTitle = get_the_title()."   ( <a class='vidPreview' target='_blank' href='".get_permalink()."'>View</a> )";
+            $vidTitle = get_the_title()."    ( <a class='vidPreview' target='_blank' href='".get_permalink()."'>View</a> )";
             $this->arr['post_title'] = $vidTitle;
             //$this->arr['guid'] = get_permalink();
             $this->arr['status'] = get_post_status(get_the_ID());
