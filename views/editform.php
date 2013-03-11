@@ -43,6 +43,7 @@ if (($current_auth == $user_id)||($current_user->caps['administrator']=='1')) {
 
                                         <?php
                                         $url_thumb = get_post_meta($_GET['id'], "videoswiper-embed-thumb", TRUE);
+                                       // echo $_GET['id'].$url_thumb;
                                         if (!(empty($url_thumb))) {
                                             ?>
 
