@@ -242,14 +242,15 @@ class Videoba {
         $this->i = 0;
         while ($this->customPosts->have_posts()) : $this->customPosts->the_post(); // Inserting values in table
             $this->arr['ID'] = get_the_ID();
-            //Fetching Thumbnail
+            //-------------------------------Fetching Thumbnail-----------------------------------
+            
             if(has_post_thumbnail())
                 $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ) );  //URL of Thumbnail as attachment
             else
                 $image[0] = get_post_meta(get_the_ID(), 'videoswiper-embed-thumb', TRUE);    //URL of Thumbnail from URL
             $this->arr['thumb'] =  '<a href="'.get_permalink().'"><img src="'.$image[0].'" width="120px" height="68px" /></a>';  
             
-            //------------Getting video title followed by url to video-----------
+            //-------------------Getting video title followed by url to video-----------------------------------------
             
             $vidTitle = get_the_title()."    ( <a class='vidPreview' target='_blank' href='".get_permalink()."'>View</a> )";
             $this->arr['post_title'] = $vidTitle;

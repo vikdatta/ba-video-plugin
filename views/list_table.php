@@ -130,8 +130,8 @@ class My_List_Table extends WP_List_Table {
     function column_post_title($item) {
 
         $actions = array(
-            'edit' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Edit</a>', 'edit', get_the_ID()),
-            'delete' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Delete</a>', 'del', get_the_ID()),
+            'edit' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Edit</a>', 'edit', $item['ID']),
+            'delete' => sprintf('<a href="?page=ba-vid-plugin&mode=%s&id=%s">Delete</a>', 'del', $item['ID']),
         );
         return sprintf('%1$s %2$s', $item['post_title'], $this->row_actions($actions));
     }
