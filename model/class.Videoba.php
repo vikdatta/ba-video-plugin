@@ -244,11 +244,14 @@ class Videoba {
             $this->arr['ID'] = get_the_ID();
             //-------------------------------Fetching Thumbnail-----------------------------------
             
-            if(has_post_thumbnail())
-                $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ) );  //URL of Thumbnail as attachment
-            else
+            if(has_post_thumbnail()){
+                $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),array(120,68) );  //URL of Thumbnail as attachment
+                $this->arr['thumb'] =  '<a href="'.get_permalink().'"><img src="'.$image[0].'" width="120px" height="'.$image[2].'" /></a>'; 
+            }
+            else{
                 $image[0] = get_post_meta(get_the_ID(), 'videoswiper-embed-thumb', TRUE);    //URL of Thumbnail from URL
             $this->arr['thumb'] =  '<a href="'.get_permalink().'"><img src="'.$image[0].'" width="120px" height="68px" /></a>';  
+            }
             
             //-------------------Getting video title followed by url to video-----------------------------------------
             
