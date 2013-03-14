@@ -37,14 +37,12 @@ class My_List_Table extends WP_List_Table {
     function process_bulk_action() {
 
         if ('delete' === $this->current_action()) {
-           
+
             foreach ($_POST['video'] as $video) {
-              
+
                 //echo $video;
                 wp_delete_post($video, TRUE);
-               
             }
-           
         }
     }
 
@@ -110,7 +108,7 @@ class My_List_Table extends WP_List_Table {
             'post_title' => array('post_title', false),
             //'guid' => array('guid', false),
             'status' => array('status', false),
-            'author' => array('author',false),
+            'author' => array('author', false),
             'duration' => array('duration', false)
         );
         return $sortable_columns;
@@ -156,8 +154,8 @@ $myListTable->prepare_items($this->a);
 ?><form method="post">
 
     <input type="hidden" name="page" value="my_list_test" />
-   
-    <?php $myListTable->search_box('search', 'search_id'); ?>
+
+<?php $myListTable->search_box('search', 'search_id'); ?>
 
     <?php $myListTable->display(); ?>
 </form><?php

@@ -247,7 +247,7 @@ class PluginUpdateChecker_1_3 {
 	 * @return PluginUpdate|null
 	 */
 	public function checkForUpdates(){
-            echo "here";
+            //echo "here";
 		$installedVersion = $this->getInstalledVersion();
 		//Fail silently if we can't find the plugin or read its header.
 		if ( $installedVersion === null ) {
