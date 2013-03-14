@@ -48,7 +48,7 @@ function call() {
                         <p><strong>Illegal Delete request.</strong>
 
                     </div>
-                </div>     <?php
+                </div><?php
             }
         } else
         if ($_GET['mode'] == 'edit') {      //Edit  button pressed
@@ -59,4 +59,3 @@ function call() {
     }
 }
 ?>
-       

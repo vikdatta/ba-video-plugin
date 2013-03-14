@@ -1,5 +1,4 @@
 <?php
-
 class Videoba {
 
     public $ok = 1;
