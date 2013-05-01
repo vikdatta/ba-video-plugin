@@ -1,6 +1,6 @@
 <?php
 /*
-  Plugin Name: ba-vid-plugin
+  Plugin Name: Video Plugin
   Plugin URI: localhost/wordpress
   Description: video hosting plugin with MVC
   Author: baseapp systems
@@ -22,7 +22,7 @@ function call() {
     $vid = new Videoba();
     if ($_GET['page'] == 'ba-settings') {
         ?> <div class="icon32" id="icon-edit">
-        </div><h1><?php _e( 'Settings Page','ba-vid-plugin' );?></h1> <?php
+        </div><h1><?php _e( 'Settings Page','Video Plugin' );?></h1> <?php
         $vid->vidSettings();
     } else if (isset($_POST['editpost']))           //Update button pressed
         $vid->manualSubmit1();
@@ -30,7 +30,7 @@ function call() {
 
     else if ($_GET['page'] == 'ba-submit') {     //Adding new video
         $vid->manualSubmit1();
-    } else if ($_GET['page'] == 'ba-vid-plugin') {
+    } else if ($_GET['page'] == 'Video') {
 
         if ($_GET['mode'] == 'del') {           //Delete button pressed
             $post_tmp_del = get_post($_GET['id']);

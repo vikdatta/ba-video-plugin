@@ -57,7 +57,7 @@ function setPostViews() {
     echo $countdisp;
 }
 
-if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'ba-vid-plugin') || (is_page())) {
+if (($_GET['page'] == 'ba-submit') || ($_GET['page'] == 'Video') || (is_page())) {
     //echo "here";
     add_action('admin_enqueue_scripts', 'load_css_scripts');      //include CSS here
 
@@ -83,16 +83,16 @@ add_action('admin_menu', 'create_menu');         //Creating Custom Admin menu
 
 function create_menu() {
     load_plugin_textdomain('ba-vid-plugin', false, dirname(plugin_basename(__FILE__)));
-    add_menu_page("ba-vid-plugin", "ba-vid-plugin", 0, "ba-vid-plugin", "show_video_menu", "../wp-content/plugins/BA-video/ba_icon.jpg");
-    add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Manage Videos", 0, "ba-vid-plugin", "show_video_menu");
-    add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Submit Videos", 0, "ba-submit", "show_video_menu");
-    add_submenu_page("ba-vid-plugin", "ba-vid-plugin", "Settings", 4, "ba-settings", "show_video_menu");
+    add_menu_page("Video", "Video", 0, "Video", "show_video_menu", "../wp-content/plugins/BA-video/ba_icon.jpg");
+    add_submenu_page("Video", "Video", "Manage Videos", 0, "Video", "show_video_menu");
+    add_submenu_page("Video", "Video", "Submit Videos", 0, "ba-submit", "show_video_menu");
+    add_submenu_page("Video", "Video", "Settings", 4, "ba-settings", "show_video_menu");
 }
 
 function show_video_menu() {         //Callback function
     switch ($_GET['page']) {
 
-        case 'ba-vid-plugin' :
+        case 'Video' :
             //include_once (dirname(__FILE__) . '/ba-managment.php');     //Manage Videos
             call();
             break;
